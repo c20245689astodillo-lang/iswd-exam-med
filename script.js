@@ -1,5 +1,6 @@
 gsap.registerPlugin(ScrollTrigger);
 
+
 const root = document.documentElement;
 const darkModeToggle = document.querySelector("#darkModeToggle");
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
@@ -9,9 +10,11 @@ const formStatus = document.querySelector("#formStatus");
 const themeStorageKey = "yummys-theme";
 const savedTheme = localStorage.getItem(themeStorageKey);
 
+
 if (savedTheme === "dark") {
   root.classList.add("dark");
 }
+
 
 function syncThemeButton() {
   const darkModeIsOn = root.classList.contains("dark");
@@ -21,29 +24,37 @@ function syncThemeButton() {
   themeColorMeta.setAttribute("content", darkModeIsOn ? "#21152E" : "#6F46A0");
 }
 
+
 syncThemeButton();
+
 
 darkModeToggle.addEventListener("click", function () {
   root.classList.toggle("dark");
   localStorage.setItem(themeStorageKey, root.classList.contains("dark") ? "dark" : "light");
   syncThemeButton();
 
+
   if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-    // power2.out gives the toggle a quick, smooth finish after its full turn.
+    
     gsap.to(darkModeToggle, { rotation: "+=360", duration: 0.45, ease: "power2.out" });
   }
 });
+
 
 contactForm.addEventListener("submit", function (event) {
   event.preventDefault();
   formStatus.textContent = "Thanks! This sample form is not connected to an inbox yet.";
 });
 
+
 const motion = gsap.matchMedia();
 
+
 motion.add("(prefers-reduced-motion: no-preference)", function () {
-  // power2.out keeps the intro smooth and controlled, matching your reference.
+
+
   const introTimeline = gsap.timeline({ defaults: { duration: 0.45, ease: "power2.out" } });
+
 
   introTimeline
     .from("#brandLockup", { y: -14, opacity: 0 })
@@ -52,13 +63,14 @@ motion.add("(prefers-reduced-motion: no-preference)", function () {
     .from(".site-nav .nav-link", { y: -10, opacity: 0, stagger: 0.06, duration: 0.3 }, "<")
     .from("#darkModeToggle", { scale: 0.92, opacity: 0, duration: 0.3 }, "-=0.12");
 
+
   replayButton.hidden = false;
   const replayIntro = function () {
     introTimeline.restart();
   };
   replayButton.addEventListener("click", replayIntro);
 
-  // "none" keeps the bar exactly in step with the visitor's scroll position.
+
   gsap.fromTo("#progressBar", { scaleX: 0 }, {
     scaleX: 1,
     ease: "none",
@@ -70,8 +82,9 @@ motion.add("(prefers-reduced-motion: no-preference)", function () {
     },
   });
 
+
   gsap.utils.toArray(".reveal").forEach(function (section) {
-    // power2.out gives each section a gentle landing as it enters view.
+   
     gsap.from(section, {
       y: 28,
       opacity: 0,
@@ -85,11 +98,16 @@ motion.add("(prefers-reduced-motion: no-preference)", function () {
     });
   });
 
+
   return function () {
     replayButton.removeEventListener("click", replayIntro);
   };
 });
 
+
 motion.add("(prefers-reduced-motion: reduce)", function () {
   replayButton.hidden = true;
 });
+
+
+
